@@ -1,9 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy_serializer import SerializerMixin
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 db = SQLAlchemy()
 
-class Movie(db.Model, SerializerMixin):
+class Movie(db.Model):
     __tablename__ = 'movies'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -11,3 +11,9 @@ class Movie(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<Movie {self.title}>'
+
+class MovieSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Movie
+        include_relationships = True
+        load_instance = True
